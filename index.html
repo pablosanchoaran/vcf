@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Generador de VCF</title>
+</head>
+<body>
+    <h2>Generador de Archivo VCF</h2>
+    <form id="vcfForm">
+        <label for="name">Nombre:</label><br>
+        <input type="text" id="name" name="name" required><br>
+        <label for="phone">Teléfono:</label><br>
+        <input type="text" id="phone" name="phone" required><br>
+        <label for="email">Mail:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        <button type="button" onclick="generateVCF()">Generar VCF</button>
+    </form>
+    <script>
+        function generateVCF() {
+            // Recolectar datos del formulario
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            // Crear contenido del VCF
+            const vcfContent = `BEGIN:VCARD\\nVERSION:3.0\\nFN:${name}\\nTEL;TYPE=WORK,VOICE:${phone}\\nEMAIL:${email}\\nEND:VCARD`;
+
+            // Generar descarga del VCF
+            const blob = new Blob([vcfContent], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${name.replace(/ /g, '_')}.vcf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
